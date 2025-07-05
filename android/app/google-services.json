@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "875724669482",
+    "project_id": "ebookings8-5ff83",
+    "storage_bucket": "ebookings8-5ff83.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875724669482:android:dac6964632b9931b1af953",
+        "android_client_info": {
+          "package_name": "com.example.eventbooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875724669482-kot19mef6vbjf0n0sbo3m5fsbgvkahld.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eventbooking",
+            "certificate_hash": "44c94a91e1795b50e53104b76fd1e4801a8ec591"
+          }
+        },
+        {
+          "client_id": "875724669482-lc4f19j0ad3qnk4eil597gkbk726h798.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eventbooking",
+            "certificate_hash": "3abdefa71348c8c447b83c370032021be4ea2e50"
+          }
+        },
+        {
+          "client_id": "875724669482-osi3s4jkm436on6t4fnbudidt3dprk19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eventbooking",
+            "certificate_hash": "49ed7ce0d80a46bcc2d8a4a6b0ab3bff66851b5a"
+          }
+        },
+        {
+          "client_id": "875724669482-bt0hlbc9a3dkam42kc99tfoa494miskb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxFOEZBd2vJvtuGsjN9sTvBm1V-NlH79I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875724669482-69l51qofsr50867ml0s2hfq5o7n8rkef.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "875724669482-fd04fupngf91ks5lgknjhulrab4gtjo3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.eventbooking"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
