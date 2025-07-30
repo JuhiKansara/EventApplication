@@ -80,7 +80,7 @@ class BookingPage extends StatelessWidget {
               "Bookings",
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 30.0,
+                fontSize: 28.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -164,16 +164,17 @@ class BookingPage extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // 🔁 Top row: shows Event Name with icon
                                   Row(
                                     children: [
                                       const Icon(
-                                        Icons.location_on_outlined,
+                                        Icons.event,
                                         color: Colors.blue,
                                       ),
                                       const SizedBox(width: 10),
                                       Expanded(
                                         child: Text(
-                                          data['Location'] ?? 'Unknown',
+                                          data['Name'] ?? 'Event',
                                           style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
@@ -186,12 +187,11 @@ class BookingPage extends StatelessWidget {
                                             Icons.delete,
                                             color: Colors.red,
                                           ),
-                                          onPressed:
-                                              () => _deleteBooking(
-                                                context,
-                                                bookingId,
-                                                userId,
-                                              ),
+                                          onPressed: () => _deleteBooking(
+                                            context,
+                                            bookingId,
+                                            userId,
+                                          ),
                                         ),
                                     ],
                                   ),
@@ -200,37 +200,40 @@ class BookingPage extends StatelessWidget {
                                     children: [
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
-                                        child:
-                                            data['Image'] != null
-                                                ? Image.network(
-                                                  data['Image'],
-                                                  height: 130,
-                                                  width: 130,
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder:
-                                                      (
-                                                        context,
-                                                        error,
-                                                        stackTrace,
-                                                      ) => const Icon(
-                                                        Icons.broken_image,
-                                                        size: 80,
-                                                      ),
-                                                )
-                                                : const Icon(Icons.image),
+                                        child: data['Image'] != null
+                                            ? Image.network(
+                                          data['Image'],
+                                          height: 130,
+                                          width: 130,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) =>
+                                          const Icon(Icons.broken_image, size: 80),
+                                        )
+                                            : const Icon(Icons.image),
                                       ),
                                       const SizedBox(width: 15),
                                       Expanded(
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              data['Name'] ?? 'Event',
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                            // ✅ Location with icon and normal font
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.location_on_outlined,
+                                                  size: 18,
+                                                  color: Colors.blue,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Expanded(
+                                                  child: Text(
+                                                    data['Location'] ?? 'Unknown',
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                             const SizedBox(height: 8),
                                             Row(
@@ -242,8 +245,7 @@ class BookingPage extends StatelessWidget {
                                                 ),
                                                 const SizedBox(width: 5),
                                                 Text(
-                                                  data['Date']?.toString() ??
-                                                      'N/A',
+                                                  data['Date']?.toString() ?? 'N/A',
                                                   style: const TextStyle(
                                                     fontSize: 16,
                                                   ),
@@ -260,11 +262,9 @@ class BookingPage extends StatelessWidget {
                                                 ),
                                                 const SizedBox(width: 5),
                                                 Text(
-                                                  data['Price']?.toString() ??
-                                                      '0',
+                                                  data['Price']?.toString() ?? '0',
                                                   style: const TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 16,
                                                   ),
                                                 ),
                                               ],
