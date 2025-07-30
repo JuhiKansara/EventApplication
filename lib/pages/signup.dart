@@ -22,7 +22,7 @@ class _SignUpState extends State<SignUp> {
             // Top image section
             SizedBox(
               height: MediaQuery.of(context).size.height / 2,
-              child: Image.asset("images/signup.jpeg", fit: BoxFit.cover),
+              child: Image.asset("images/signuplogo.png", fit: BoxFit.cover),
             ),
 
             const SizedBox(height: 10.0),

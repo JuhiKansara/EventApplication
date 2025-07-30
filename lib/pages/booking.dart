@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class BookingPage extends StatelessWidget {
   const BookingPage({super.key});
@@ -35,6 +36,7 @@ class BookingPage extends StatelessWidget {
           .collection('Bookings')
           .doc(bookingId)
           .delete();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Booking deleted successfully"),
@@ -54,10 +56,6 @@ class BookingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    const backgroundColor = Color(0xFFEAF3F5);
-    const primaryColor = Color(0xFF003B49);
 
     if (currentUser == null) {
       return const Scaffold(body: Center(child: Text("User not logged in")));
@@ -66,25 +64,37 @@ class BookingPage extends StatelessWidget {
     final userId = currentUser.uid;
 
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(
+      body: Container(
+        padding: const EdgeInsets.only(top: 60.0),
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFEAF3F5), Color(0xFF003B49)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            Center(
-              child: Text(
-                "My Bookings",
-                style: TextStyle(
-                  fontSize: screenWidth * 0.07,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor,
-                ),
+            const Text(
+              "Bookings",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15.0),
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(color: backgroundColor),
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                  color: Colors.white,
+                ),
                 child: StreamBuilder<QuerySnapshot>(
                   stream:
                       FirebaseFirestore.instance
@@ -101,12 +111,7 @@ class BookingPage extends StatelessWidget {
                     final bookings = snapshot.data!.docs;
 
                     if (bookings.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          "No bookings yet.",
-                          style: TextStyle(color: primaryColor),
-                        ),
-                      );
+                      return const Center(child: Text("No bookings yet."));
                     }
 
                     return ListView.builder(
@@ -121,10 +126,10 @@ class BookingPage extends StatelessWidget {
                           future: getEventFromId(eventId),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) return const SizedBox();
-
                             final eventDoc = snapshot.data;
-                            if (eventDoc == null || !eventDoc.exists)
+                            if (eventDoc == null || !eventDoc.exists) {
                               return const SizedBox();
+                            }
 
                             final data =
                                 eventDoc.data() as Map<String, dynamic>;
@@ -143,39 +148,35 @@ class BookingPage extends StatelessWidget {
                                 eventDate == null ? true : isExpired(eventDate);
 
                             return Container(
-                              margin: const EdgeInsets.only(bottom: 16),
+                              margin: const EdgeInsets.only(bottom: 20.0),
+                              padding: const EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: primaryColor.withOpacity(0.2),
-                                ),
+                                color: const Color(0xFFF2F7FA),
+                                borderRadius: BorderRadius.circular(25),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black12,
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
+                                    blurRadius: 6,
+                                    offset: Offset(0, 4),
                                   ),
                                 ],
                               ),
-                              padding: const EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       const Icon(
-                                        Icons.event,
-                                        color: primaryColor,
+                                        Icons.location_on_outlined,
+                                        color: Colors.blue,
                                       ),
-                                      const SizedBox(width: 8),
+                                      const SizedBox(width: 10),
                                       Expanded(
                                         child: Text(
-                                          data['Name'] ?? 'Event Name',
+                                          data['Location'] ?? 'Unknown',
                                           style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: primaryColor,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                       ),
@@ -198,87 +199,72 @@ class BookingPage extends StatelessWidget {
                                   Row(
                                     children: [
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
+                                        borderRadius: BorderRadius.circular(15),
                                         child:
                                             data['Image'] != null
                                                 ? Image.network(
                                                   data['Image'],
-                                                  width: 80,
-                                                  height: 80,
+                                                  height: 130,
+                                                  width: 130,
                                                   fit: BoxFit.cover,
-                                                  errorBuilder: (
-                                                    context,
-                                                    error,
-                                                    stackTrace,
-                                                  ) {
-                                                    return const Icon(
-                                                      Icons.image_not_supported,
-                                                      size: 80,
-                                                    );
-                                                  },
+                                                  errorBuilder:
+                                                      (
+                                                        context,
+                                                        error,
+                                                        stackTrace,
+                                                      ) => const Icon(
+                                                        Icons.broken_image,
+                                                        size: 80,
+                                                      ),
                                                 )
-                                                : const Icon(
-                                                  Icons.image_not_supported,
-                                                  size: 80,
-                                                ),
+                                                : const Icon(Icons.image),
                                       ),
-                                      const SizedBox(width: 12),
+                                      const SizedBox(width: 15),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.location_on,
-                                                  size: 16,
-                                                  color: primaryColor,
-                                                ),
-                                                const SizedBox(width: 5),
-                                                Expanded(
-                                                  child: Text(
-                                                    data['Location'] ??
-                                                        'Unknown',
-                                                    style: const TextStyle(
-                                                      color: primaryColor,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                            Text(
+                                              data['Name'] ?? 'Event',
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                            const SizedBox(height: 5),
+                                            const SizedBox(height: 8),
                                             Row(
                                               children: [
                                                 const Icon(
-                                                  Icons.calendar_today,
-                                                  size: 16,
-                                                  color: primaryColor,
+                                                  Icons.calendar_month,
+                                                  size: 18,
+                                                  color: Colors.blue,
                                                 ),
                                                 const SizedBox(width: 5),
                                                 Text(
                                                   data['Date']?.toString() ??
                                                       'N/A',
                                                   style: const TextStyle(
-                                                    color: primaryColor,
+                                                    fontSize: 16,
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(height: 5),
+                                            const SizedBox(height: 6),
                                             Row(
                                               children: [
                                                 const Icon(
-                                                  Icons.currency_rupee,
-                                                  size: 16,
-                                                  color: primaryColor,
+                                                  Icons.currency_rupee_outlined,
+                                                  size: 18,
+                                                  color: Colors.blue,
                                                 ),
                                                 const SizedBox(width: 5),
                                                 Text(
                                                   data['Price']?.toString() ??
                                                       '0',
                                                   style: const TextStyle(
-                                                    color: primaryColor,
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
                                               ],

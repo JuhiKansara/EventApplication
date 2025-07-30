@@ -197,7 +197,16 @@ class _HomeState extends State<Home> {
       stream: eventStream,
       builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
-          return Center(child: Text("No events found."));
+          return Container(
+            width: double.infinity,
+            color: const Color(0xE6EDEEEC),
+            alignment: Alignment.center,
+            height: 150,
+            child: const Text(
+              "No events found.",
+              style: TextStyle(color: Colors.black87, fontSize: 16),
+            ),
+          );
         }
 
         DateTime today = DateTime.now();
@@ -205,32 +214,40 @@ class _HomeState extends State<Home> {
 
         List<DocumentSnapshot> filteredEvents =
             snapshot.data.docs.where((doc) {
-              String name = (doc["Name"] ?? "").toString().toLowerCase();
-              bool matchesSearch = name.contains(searchQuery.toLowerCase());
+          String name = (doc["Name"] ?? "").toString().toLowerCase();
+          bool matchesSearch = name.contains(searchQuery.toLowerCase());
 
-              String dateStr = doc["Date"] ?? "";
-              if (dateStr.isEmpty) return false;
+          String dateStr = doc["Date"] ?? "";
+          if (dateStr.isEmpty) return false;
 
-              DateTime eventDate = DateTime.tryParse(dateStr) ?? DateTime(2000);
-              DateTime eventOnlyDate = DateTime(
-                eventDate.year,
-                eventDate.month,
-                eventDate.day,
-              );
-              if (eventOnlyDate.isBefore(todayOnly)) return false;
+          DateTime eventDate = DateTime.tryParse(dateStr) ?? DateTime(2000);
+          DateTime eventOnlyDate = DateTime(
+            eventDate.year,
+            eventDate.month,
+            eventDate.day,
+          );
+          if (eventOnlyDate.isBefore(todayOnly)) return false;
 
-              if (selectedDepartment != null &&
-                  selectedDepartment!.isNotEmpty) {
-                List docDepartments = doc["Departments"] ?? [];
-                return matchesSearch &&
-                    docDepartments.contains(selectedDepartment);
-              }
+          if (selectedDepartment != null && selectedDepartment!.isNotEmpty) {
+            List docDepartments = doc["Departments"] ?? [];
+            return matchesSearch &&
+                docDepartments.contains(selectedDepartment);
+          }
 
-              return matchesSearch;
-            }).toList();
+          return matchesSearch;
+        }).toList();
 
         if (filteredEvents.isEmpty) {
-          return Center(child: Text("No matching events found."));
+          return Container(
+            width: double.infinity,
+            color: const Color(0xFFEAF3F5),
+            alignment: Alignment.center,
+            height: 300,
+            child: const Text(
+              "No matching events found.",
+              style: TextStyle(color: Colors.black87, fontSize: 16),
+            ),
+          );
         }
 
         return ListView.builder(
@@ -286,7 +303,7 @@ class _HomeState extends State<Home> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               child: Image.network(
                 imagePath,
-                height: 180,
+                height: 150,
                 width: screenWidth,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
